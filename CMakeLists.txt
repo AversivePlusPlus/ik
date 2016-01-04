@@ -69,21 +69,6 @@ if(COMPILE_LIB)
   endif()
 
   ## Startup lib
-
-  file(GLOB_RECURSE STARTUP_CPP "startup/*.cpp")
-  file(GLOB_RECURSE STARTUP_HPP "startup/*.hpp")
-  file(GLOB_RECURSE STARTUP_C "startup/*.c")
-  file(GLOB_RECURSE STARTUP_H "startup/*.h")
-  file(GLOB_RECURSE STARTUP_S "startup/*.s")
-
-  set(STARTUP
-    ${STARTUP_CPP}
-    ${STARTUP_HPP}
-    ${STARTUP_C}
-    ${STARTUP_H}
-    ${STARTUP_S}
-    )
-
   if(STARTUP)
     add_library(
       ${NAME}_startup_obj OBJECT

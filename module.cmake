@@ -5,6 +5,9 @@ set(NAME template-module)
 # Modules that the current module depends on
 set(DEPENDENCIES)
 
+# Startup files
+set(STARTUP startup/test.c)
+
 # Determines if the modules will be compiled
 # and included in Aversive++ for the current MCU
 # you may check some environnement variables
