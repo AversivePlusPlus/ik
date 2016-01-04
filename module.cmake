@@ -6,7 +6,7 @@ set(NAME template-module)
 set(DEPENDENCIES)
 
 # Startup files
-set(STARTUP startup/test.c)
+set(STARTUP)
 
 # Determines if the modules will be compiled
 # and included in Aversive++ for the current MCU
