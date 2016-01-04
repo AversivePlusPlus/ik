@@ -20,24 +20,10 @@ if(NOT ${DEP_OK})
   message(FATAL_ERROR "Can't compile if dependencies are missing")
 endif()
 
-## Interface lib
+## Interface
 
 file(GLOB_RECURSE INTERFACE_HPP "include/*.hpp")
 file(GLOB_RECURSE INTERFACE_H "include/*.h")
-
-add_library(
-  ${NAME} STATIC
-  ${INTERFACE_HPP}
-  ${INTERFACE_H}
-  )
-
-foreach(dep IN ITEMS ${DEPENDENCIES})
-  get_target_property(INCLUDE_PATH ${dep} INCLUDE_PATH)
-  target_include_directories(${NAME}_obj PUBLIC ${INCLUDE_PATH})
-  target_link_libraries(${NAME} PUBLIC ${dep})
-endforeach(dep)
-
-set_target_properties(${NAME} PROPERTIES LINKER_LANGUAGE CXX)
 
 if(COMPILE_LIB)
   ## Regular lib
@@ -81,6 +67,24 @@ if(COMPILE_LIB)
     endforeach(dep)
   endif()
 endif()
+
+# Interface lib
+
+add_library(
+  ${NAME} STATIC
+  ${INTERFACE_HPP}
+  ${INTERFACE_H}
+  )
+
+foreach(dep IN ITEMS ${DEPENDENCIES})
+  get_target_property(INCLUDE_PATH ${dep} INCLUDE_PATH)
+  if(TARGET ${NAME}_obj)
+    target_include_directories(${NAME}_obj PUBLIC ${INCLUDE_PATH})
+  endif()
+  target_link_libraries(${NAME} PUBLIC ${dep})
+endforeach(dep)
+
+set_target_properties(${NAME} PROPERTIES LINKER_LANGUAGE CXX)
 
 ## Install
 if(INSTALL_INTERFACE)
