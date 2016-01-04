@@ -76,7 +76,7 @@ add_library(
   ${INTERFACE_H}
   )
 
-target_include_directories(${NAME}_obj PUBLIC "include")
+target_include_directories(${NAME} PUBLIC "include")
 foreach(dep IN ITEMS ${DEPENDENCIES})
   get_target_property(INCLUDE_PATH ${dep} INTERFACE_INCLUDE_DIRECTORIES)
   target_include_directories(${NAME} PUBLIC ${INCLUDE_PATH})
