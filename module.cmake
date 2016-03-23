@@ -1,9 +1,9 @@
 # The module name
 # Must be unique for an entire Aversive++ distribution
-set(NAME template-module)
+set(NAME ik)
 
 # Modules that the current module depends on
-set(DEPENDENCIES)
+set(DEPENDENCIES base cas)
 
 # Startup files
 set(STARTUP)
