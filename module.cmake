@@ -14,4 +14,7 @@ set(STARTUP)
 # like ${AVERSIVE_PLATFORM} or ${AVERSIVE_MCU}
 # to determine if COMPILE_LIB should be equal to 0 or 1
 set(COMPILE_LIB 1)
-add_subdirectory(test)
+
+if(AVERSIVE_TOOLCHAIN_NATIVE)
+  add_subdirectory(test)
+endif()

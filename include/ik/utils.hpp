@@ -8,7 +8,7 @@ namespace IK {
 
   namespace utils {
 
-    namespace HomogeneousZeroVerctorPrivate {
+    namespace PrivateHomogeneousZeroVerctor {
       template<typename Ret, typename Param, int ROWS>
       class Vector {
       private:
@@ -22,7 +22,7 @@ namespace IK {
       };
     }
 
-    template<typename Ret, typename Param, array_t ROWS> using HomogeneousZeroVector = typename HomogeneousZeroVerctorPrivate::Vector<Ret, Param, (int)ROWS>::Value;
+    template<typename Ret, typename Param, array_t ROWS> using HomogeneousZeroVector = typename PrivateHomogeneousZeroVerctor::Vector<Ret, Param, (int)ROWS>::Value;
 
   }
 
@@ -42,7 +42,7 @@ namespace IK {
 
   namespace utils {
 
-    namespace MatrixTransposerPrivate {
+    namespace PrivateMatrixTransposer {
       template<typename Func>
       struct MatrixTransposer {
         static_assert(sizeof(Func)&&!sizeof(Func), "ERROR!!!");
@@ -67,13 +67,13 @@ namespace IK {
     }
 
     template<typename Func>
-    using MatrixTransposer = typename MatrixTransposerPrivate::MatrixTransposer<Func>::Value;
+    using MatrixTransposer = typename PrivateMatrixTransposer::MatrixTransposer<Func>::Value;
 
   }
 
   namespace utils {
 
-    namespace MatrixFromRowBuilderPrivate {
+    namespace PrivateMatrixFromRowBuilder {
       template<typename ...Args>
       struct _MatrixFromRowBuilder {};
 
@@ -102,7 +102,7 @@ namespace IK {
     }
 
     template<typename ...Args>
-    using MatrixFromRowBuilder = typename MatrixFromRowBuilderPrivate::_MatrixFromRowBuilder<Args...>::Value;
+    using MatrixFromRowBuilder = typename PrivateMatrixFromRowBuilder::_MatrixFromRowBuilder<Args...>::Value;
 
   }
 
