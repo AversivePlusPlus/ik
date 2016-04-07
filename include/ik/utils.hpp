@@ -44,7 +44,9 @@ namespace IK {
 
     namespace MatrixTransposerPrivate {
       template<typename Func>
-      struct MatrixTransposer {};
+      struct MatrixTransposer {
+        static_assert(sizeof(Func)&&!sizeof(Func), "ERROR!!!");
+      };
 
       template<typename Ret, typename Param, array_t ROWS, array_t COLS, typename ...Args>
       struct MatrixTransposer<CAS::Matrix<Ret, Param, ROWS, COLS, Args...>> {
@@ -104,6 +106,17 @@ namespace IK {
 
   }
 
+  namespace utils {
+
+    template<typename Func>
+    struct MatrixElementType {};
+
+    template<typename T, array_t ROWS, array_t COLS>
+    struct MatrixElementType<Matrix<T, ROWS, COLS>> {
+      using Value = T;
+    };
+
+  }
 }
 
 #endif//IK_UTILS_HPP
