@@ -32,6 +32,7 @@ int main(int, char**) {
   ::BuildConstant<T56>
   ::BuildVariable<T67>
   ::BuildConstant<T78>
+  ::Chain
   ;
 
   auto Q = Matrix<double, 4, 1>();
