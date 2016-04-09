@@ -10,8 +10,9 @@ namespace IK {
 
   namespace PrivateChainBuilder {
     template<typename Element>
-    class ChainBuilder : public ChainElement<Element> {
+    class ChainBuilder {
     public:
+      using Chain = ChainElement<Element>;
       template<typename Func> using BuildConstant = ChainBuilder<ConstantChainElement<Func, Element>>;
       template<typename Func> using BuildVariable = ChainBuilder<VariableChainElement<Func, Element>>;
     };
