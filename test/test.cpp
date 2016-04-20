@@ -8,6 +8,18 @@
 #include <iostream>
 using namespace std;
 
+template<typename T, array_t ROWS, array_t COLS>
+ostream& operator<<(ostream& os, Matrix<T, ROWS, COLS> m) {
+  for(u32 r = 0 ; r < ROWS ; r++) {
+      for(u32 c = 0 ; c < COLS ; c++) {
+          os << m[r][c] << " ";
+        }
+      os << endl;
+    }
+
+  return os;
+}
+
 using G = CAS::General<double, double>;
 template<int VAL> using C = G::Const::Integer<VAL>;
 
@@ -63,6 +75,7 @@ int main(int, char**) {
 
           P = Chain::forward(Q);
           count++;
+          //cout << Chain::matrix(Q) << endl;
         }
       offset += count;
     }

@@ -51,6 +51,10 @@ namespace IK {
     using Jacobian = typename CAS::PrivateSimplify::MatrixUtils::ListBuilder<BuildFromRowsDerivate, NUM_VAR>::Value;
 
   public:
+    static inline typename Global::Transformation::ReturnType matrix(Matrix<ParamType, NUM_VAR,1> values) {
+      return Global::Transformation::apply(values);
+    }
+
     static inline typename Endpoint::ReturnType forward(Matrix<ParamType, NUM_VAR,1> values) {
       return Endpoint::apply(values);
     }
