@@ -28,38 +28,40 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-from ikpy import matrix_link
+from kinematics import *
 import sympy
 import json
 import subprocess
 import os
-import sys
 
-def get_links_from_blender(blend_path, endpoint):
-    python_script = sys.prefix + "/share/ikpy/blender_export.py"
-    command = ["blender", blend_path, "--background", "--python", python_script]
-    out = subprocess.Popen(command, stdout=subprocess.PIPE).communicate()[0]
-    data = False
-    out_data = []
-    for l in out.split("\n"):
-        if l == "end_data":
-            data = False
-        if data:
-            out_data.append(l)
-        if l == "begin_data":
-            data = True
-    json_links_list = json.loads("\n".join(out_data))
-    json_links_dict = {}
-    for l in json_links_list:
-        json_links_dict[l["name"]] = l
-    links_list = []
-    while endpoint != None:
-        json_link = json_links_dict[endpoint]
-        if json_link["is_variable"]:
-            link = matrix_link.VariableMatrixLink(json_link["name"], json_link["parent"], json_link["matrix"], [sympy.Symbol("x")])
-            links_list = [link] + links_list
+def call_blender_export(path):
+    python_script = os.path.abspath(os.path.dirname(__file__)) + "/../scripts/blender_export.py"
+    command = ["blender", path, "--background", "--python", python_script]
+    subprocess.call(command)
+
+def read_json(path):
+    f = open(path, "r")
+    ret = json.loads(f.read())
+    f.close()
+    return ret
+
+def list2dict(json_data):
+    ret = {}
+    for e in json_data:
+        ret[e['name']] = e
+    return ret
+
+def extract_chain(json_data, endpoint):
+    json_dict = list2dict(json_data)
+    elems = []
+    cur = endpoint
+    while cur != None:
+        edata = json_dict[cur]
+        if edata['is_variable']:
+            e = VariableMatrixChainElement(edata['name'], edata['parent'], edata['matrix'], [sympy.Symbol('x')])
+            elems = [e] + elems
         else:
-            link = matrix_link.ConstantMatrixLink(json_link["name"], json_link["parent"], json_link["matrix"])
-            links_list = [link] + links_list
-        endpoint = json_link["parent"]
-    return links_list
+            e = ConstantMatrixChainElement(edata['name'], edata['parent'], edata['matrix'])
+            elems = [e] + elems
+        cur = edata['parent']
+    return Chain(endpoint, elems)
