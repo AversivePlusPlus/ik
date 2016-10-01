@@ -56,34 +56,34 @@ def fill_matrix_instructions(name, matrix):
     instrs = []
     rows = len(matrix)
     cols = len(matrix[0])
-    coord_expr_list = {}
+    expr_list = []
+    coord_list = {}
     for row in range(0, rows):
         for col in range(0, cols):
-            coord_expr_list[(row, col)] = sympy.simplify(sympy.sympify(matrix[row][col]))
-    def count_expr(expr, ret = {}):
-        if ret.has_key(expr):
-            ret[expr] += 1
-        else:
-            ret[expr] = 1
-        for a in expr.args:
-            count_expr(a, ret)
-    expr_count_list = {}
-    for e in coord_expr_list:
-        count_expr(coord_expr_list[e], expr_count_list)
-    tmp_list = []
-    tmp_count = 0
-    for k, e in expr_count_list.iteritems():
-        if e > 1 and sympy.Symbol != type(k) and k.args != ():
-            s = sympy.Symbol("tmp" + str(tmp_count))
-            instrs.append("double {tmp} = {val}".format(tmp = s, val = k))
-            tmp_list += [(k, s)]
-            tmp_count += 1
-    for r, c in coord_expr_list:
-        e = coord_expr_list[(r,c)].subs(tmp_list)
+            scase = sympy.sympify(matrix[row][col])
+            coord_list[(row,col)] = len(expr_list)
+            expr_list.append(scase)
+    cse = sympy.cse(expr_list, sympy.numbered_symbols('tmp'))
+    tmp_list = cse[0]
+    expr_list = cse[1]
+    for t in tmp_list:
+        instr_template = "const double {tmp} = {val}"
+        e = t[1]
+        instr = instr_template.format(tmp=t[0], val=e)
+        instrs.append(instr)
+    for r,c in coord_list:
+        i = coord_list[(r,c)]
+        e = expr_list[i]
+        instr_template = "{name} = {expr}"
+        instr = None
         if type(name) == list:
-            instrs.append("{name} = {expr}".format(name=name[r][c], expr=e))
+            n = name[r][c]
+            instr = instr_template.format(name=n, expr=e)
         else:
-            instrs.append("{m} = {expr}".format(m=get_matrix_case(name, r,c, sympy.Matrix(matrix).shape), expr=e))
+            smat = sympy.Matrix(matrix)
+            n = get_matrix_case(name, r,c, smat.shape)
+            instr = instr_template.format(name=n, expr=e)
+        instrs.append(instr)
     return instrs
 
     
