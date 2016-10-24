@@ -15,14 +15,12 @@ The tool cannot be installed yet. But you can test it anyway !
 
 # Use
 
-The blender exporter is in development phase, but you can use it :
-
 To list available endpoints in the blend file :
 ```bash
-python src/test2.py <blend_file>
+./bin/blend2cpp <blend_file>
 ```
 
 To generate C++ code from an endpoint : 
 ```bash
-python src/test2.py <blend_file> <endpoint>
+./bin/blend2cpp <blend_file> <endpoint>
 ```
