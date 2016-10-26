@@ -1,5 +1,5 @@
 from kinematics import *
-from generator.generator import *
+from generator import *
 import numpy as np
 import sympy
 
