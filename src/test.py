@@ -1,5 +1,5 @@
 from kinematics import *
-from generator import *
+from generator.generator import *
 import numpy as np
 import sympy
 
@@ -13,11 +13,11 @@ e1 = ConstantMatrixChainElement("e1", None,
 e2 = VariableMatrixChainElement("e1", None,
                                 [[x,0,0],[0,y,0],[0,0,1]], [x,y])
 
-chain = Chain("chain", [e1, e2])
+chain = Chain("my_chain", [e1, e2])
 
-cpp = KinematicsCpp(chain)
+gen = CppProjectGenerator()
+add_ik_module(gen, chain)
 
-#print(e1.get_matrix())
-#print(e2.get_matrix(x,y))
-#print(chain.get_matrix(y,z))
-print(cpp)
+for fname in gen:
+    print("//"+fname)
+    print(gen[fname])
