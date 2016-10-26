@@ -17,7 +17,4 @@ chain = Chain("my_chain", [e1, e2])
 
 gen = CppProjectGenerator()
 add_ik_module(gen, chain)
-
-for fname in gen:
-    print("//"+fname)
-    print(gen[fname])
+print(gen)
