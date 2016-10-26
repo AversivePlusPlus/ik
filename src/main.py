@@ -26,7 +26,9 @@ def main(argv):
             argv[2]
         )
         chain.name = chain.name.replace("/", "_")
-        cpp = KinematicsCpp(chain)
-        f = open(endpoint + ".cpp", "w+")
-        f.write(str(cpp))
-        f.close()
+        gen = CppProjectGenerator()
+        add_ik_module(gen, chain)
+        for fname in gen:
+            with open(fname, "w+") as f:
+                f.write(str(gen[fname]))
+
