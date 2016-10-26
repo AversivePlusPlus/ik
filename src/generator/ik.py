@@ -161,6 +161,7 @@ def add_inverse_kinematics_step_function(gen, chain):
     t_jacobian = get_transposed_jacobian(mat, sym)
     dist = get_matrix_from_name(gen, "dist", rows, cols)
     delta = get_matrix_mult(t_jacobian, get_column_matrix(dist))
+    cse = get_cse(delta)
     assert(len(delta) == len(sym))
     assert(len(delta[0]) == 1)
     func = gen.define_function(
@@ -180,7 +181,8 @@ def add_inverse_kinematics_step_function(gen, chain):
         )
     )
     func.add_variable("delta", matrix_type(len(sym),1))
-    add_fill_matrix_instructions(func, "delta", delta)
+    add_typed_variable_list(func, func.real_type, cse[0])
+    add_fill_matrix_instructions(func, "delta", cse[1])
     add_norm_constant(func, "delta_norm", "delta", len(sym), 1)
     add_ik_return_instructions(func, sym, "delta", "delta_norm", "dist_norm")
     
