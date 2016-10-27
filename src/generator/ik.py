@@ -85,12 +85,12 @@ def add_chain_distance_instructions(gen, chain_name, ret_name, target_name, sym,
                     ),
                     " - ".join([
                         gen.matrix_get(
-                            ret_name,
+                            target_name,
                             matrix_type(rows, cols),
                             row, col
                         ),
                         gen.matrix_get(
-                            target_name,
+                            ret_name,
                             matrix_type(rows, cols),
                             row, col
                         ),
